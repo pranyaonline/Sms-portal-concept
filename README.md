@@ -21,19 +21,10 @@ time and causes wrong links to be sent.
   and the send button.
 - Works at full screen, half screen (split view) and on a phone.
 
-## Try it
+## Try it 
 
-Open `index.html` in any browser. No build step and no dependencies.
-Resize the window to see the split-screen and mobile layouts.
+https://claude.ai/artifact/VNeyAwz7Z6MASWu8rXMj2s
 
-## Customizing
-
-Everything editable is in the `EDIT HERE` block near the bottom of the file:
-
-- `CATEGORIES` — column order and colors
-- `EXPERIENCES` — the topic list
-- `MOST_USED` — pinned topics
-- `MESSAGES` — message wording per topic
 
 ## Note
 
