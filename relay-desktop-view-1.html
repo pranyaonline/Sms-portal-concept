@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1E2620">
+<title>Desktop view – Onboarding concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --rail: #1E2620;
+    --rail-2: #2A342B;
+    --rail-ink: #E9F0E6;
+    --rail-soft: #B3C2B0;
+    --ink: #13241A;
+    --muted: #3A4A3E;
+    --soft: #5B6B5E;
+    --line: #DDE3DA;
+    --field: #B9C4B6;
+    --accent: #2C6A2E;
+    --bubble: #EDF1EB;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  button, input { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .app { display: flex; width: 1440px; height: 900px; }
+
+  /* ---------- Left rail: nav + customer + preview + send ---------- */
+  .rail {
+    width: 280px; flex-shrink: 0; background: var(--rail); color: var(--rail-ink);
+    display: flex; flex-direction: column; gap: 14px; padding: 18px 16px;
+  }
+  .brand { font-size: 13px; font-weight: 600; letter-spacing: .08em; color: var(--rail-soft); }
+  .nav { display: flex; flex-direction: column; gap: 2px; }
+  .nav a {
+    padding: 9px 10px; border-radius: 6px; font-size: 14px;
+    color: var(--rail-ink); text-decoration: none;
+  }
+  .nav a:hover { background: var(--rail-2); }
+  .nav a[aria-current="page"] { background: var(--rail-2); font-weight: 600; box-shadow: inset 3px 0 0 #8CC784; }
+  .rail hr { width: 100%; border: none; border-top: 1px solid #3A463B; margin: 2px 0; }
+  .rail h2 { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: .06em; color: var(--rail-soft); }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .rail label { font-size: 13px; color: var(--rail-soft); }
+  input {
+    height: 42px; padding: 0 12px; border: 1px solid var(--field); border-radius: 8px;
+    font: inherit; font-size: 14px; background: #fff; color: var(--ink); width: 100%;
+  }
+  input:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid #8CC784; outline-offset: 2px; }
+
+  .picked {
+    display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 10px;
+    border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--ink);
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+  .phone {
+    align-self: center; width: 210px; height: 300px; border: 8px solid #0E120F;
+    border-radius: 26px; background: #fff; padding: 0; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .pv-top { padding: 8px 10px 0; }
+  .pv-mark { display: block; width: 22px; height: 22px; border-radius: 4px; background: #1F5423; }
+  .pv-bar { display: block; height: 8px; border-radius: 3px; background: #2C6A2E; margin-top: 6px; }
+  .pv-body { flex-grow: 1; overflow-y: auto; padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 8px; }
+  .pv-hero { height: 52px; border-radius: 4px; background: linear-gradient(120deg, #CEE4CA, #8CC784); }
+  .consent { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--rail-ink); }
+  .consent input { width: 18px; height: 18px; accent-color: #8CC784; }
+  .bubble {
+    align-self: flex-start; padding: 9px 11px; background: var(--bubble); color: var(--ink);
+    border-radius: 14px 14px 14px 4px; font-size: 12px; line-height: 1.45;
+  }
+  .phone .bubble { max-width: 100%; align-self: stretch; }
+  .bubble .link { color: var(--accent); text-decoration: underline; }
+  .phone-mini { display: none; }
+  .phone-mini .notch {
+    width: 46px; height: 4px; border-radius: 2px; background: #C9D3C7; margin: 0 auto 6px;
+  }
+  .phone-mini small { display: block; font-size: 10px; color: var(--soft); text-align: center; margin-bottom: 6px; }
+
+  .btn-send {
+    height: 44px; margin-top: auto; background: #8CC784; color: #13241A; border: none;
+    border-radius: 8px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer;
+  }
+  .btn-send:hover { background: #A8D5A2; }
+  .note { margin: 0; font-size: 12px; color: var(--rail-soft); min-height: 16px; }
+
+  /* ---------- Main: experiences ---------- */
+  main { flex-grow: 1; min-width: 0; padding: 22px 26px 28px; display: flex; flex-direction: column; gap: 16px; }
+  .head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .head h1 { margin: 0; font-size: 22px; font-weight: 600; }
+  .head .step { font-size: 14px; color: var(--soft); }
+  .head input { margin-left: auto; width: 280px; height: 38px; }
+  .section-title { margin: 0 0 8px; font-size: 12px; font-weight: 600; letter-spacing: .05em; color: var(--muted); text-transform: uppercase; }
+
+  .fav { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+  .cats { display: grid; gap: 10px; align-items: start; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .col { display: flex; flex-direction: column; gap: 5px; }
+  .col-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 6px;
+    padding: 7px 9px; border-radius: 8px 8px 4px 4px; font-size: 12px; font-weight: 600;
+  }
+  .col-head .count { font-size: 11px; font-weight: 500; opacity: .85; }
+  .tile {
+    display: flex; align-items: center; gap: 7px; min-height: 42px; padding: 7px 9px;
+    text-align: left; border: 2px solid transparent; border-radius: 7px; cursor: pointer;
+    font: inherit; font-size: 12.5px; font-weight: 500; line-height: 1.25; color: var(--ink);
+  }
+  .tile:hover { filter: brightness(.96); }
+  .tile[aria-pressed="true"] { border-color: var(--ink); font-weight: 600; }
+  .fav .tile { min-height: 48px; font-weight: 600; }
+  .empty { color: var(--soft); font-size: 14px; margin: 0; }
+
+  /* ---------- Medium windows ---------- */
+  
+
+  /* ---------- Half screen / split view / tablet ---------- */
+  
+
+  /* ---------- Phones (iOS / Android) ---------- */
+  
+  
+
+  /* ---------- Desktop: fits one screen, no page scroll ---------- */
+  @media (min-width: 901px) {
+    html, body { height: 100%; overflow: hidden; }
+    .app { height: 100vh; height: 100dvh; }
+    .rail { overflow-y: auto; }
+    main { height: 100%; overflow: hidden; }
+    .cats { grid-template-columns: repeat(7, minmax(0, 1fr)); flex-grow: 1; min-height: 0; }
+    .col { min-height: 0; max-height: 100%; overflow-y: auto; }
+    main > section:last-of-type { display: flex; flex-direction: column; min-height: 0; flex-grow: 1; }
+  }
+
+  /* ---------- Large desktop screens ---------- */
+  @media (min-width: 1600px) {
+    .rail { width: 330px; padding: 24px 22px; }
+    .phone { width: 230px; height: 310px; }
+    main { padding: 30px 36px 34px; gap: 20px; }
+    .head h1 { font-size: 26px; }
+    .head input { width: 340px; height: 42px; }
+    .tile { min-height: 48px; font-size: 14px; padding: 9px 11px; }
+    .fav .tile { min-height: 56px; }
+    .col-head { font-size: 13px; padding: 9px 11px; }
+  }
+
+  html, body { overflow: auto; background: #E7EBE4; }
+  .frame { padding: 10px; }
+  .caption { font-size: 13px; color: #3A4A3E; margin: 0 0 8px; }
+  .stage { transform-origin: top left; }
+</style>
+</head>
+<body>
+<div class="frame"><p class="caption">Desktop view, scaled to fit your screen (actual size 1440 x 900).</p><div class="stage" id="stage"><div class="app">
+
+  <!-- LEFT RAIL: menu on top, then everything needed to send -->
+  <aside class="rail">
+    <div class="brand">EXPERIENCE CENTER</div>
+    <nav class="nav">
+      <a href="#" aria-current="page">Onboarding</a>
+      <a href="#">Experience Launcher</a>
+      <a href="#">Customer Lookup</a>
+    </nav>
+    <hr>
+    <h2>CUSTOMER</h2>
+    <div class="field">
+      <label for="cphone">Mobile number</label>
+      <input id="cphone" type="tel" placeholder="(555) 000-0000" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="cacct">Account ID (no spaces)</label>
+      <input id="cacct" type="text" placeholder="RM# or mobile number" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="cname">First name</label>
+      <input id="cname" type="text" placeholder="e.g. Jane" autocomplete="off">
+    </div>
+    <label class="consent"><input type="checkbox" id="consent"> Caller accepted SMS terms</label>
+    <div class="field topic-field">
+      <span class="label" style="font-size:13px;color:var(--rail-soft)">Experience</span>
+      <div class="picked" id="picked"></div>
+    </div>
+    <div class="phone" aria-label="Message preview">
+      <div class="pv-top"><span class="pv-mark"></span><span class="pv-bar"></span></div>
+      <div class="pv-body"><div class="pv-hero"></div><div class="bubble" id="bubble"></div></div>
+    </div>
+    <div class="phone-mini" id="phoneMini" aria-label="Message preview">
+      <span class="notch"></span>
+      <small>Text message, now</small>
+      <div class="bubble" id="bubbleMini"></div>
+    </div>
+    <button class="btn-send" type="button" id="send">Send link</button>
+    <p class="note" id="sendNote" role="status"></p>
+  </aside>
+
+  <!-- MAIN: every experience on one screen -->
+  <main>
+    <div class="head">
+      <h1>Onboarding</h1>
+      <span class="step">Step 1 – select the experience</span>
+      <label for="search" class="sr">Search experiences</label>
+      <input id="search" type="search" placeholder="Search experiences">
+    </div>
+
+    <section id="favSection">
+      <h3 class="section-title">Most used</h3>
+      <div class="fav" id="fav"></div>
+    </section>
+
+    <section>
+      <h3 class="section-title" id="catsTitle">By category</h3>
+      <div class="cats" id="cats"></div>
+      <p class="empty" id="empty" hidden>No experiences match your search.</p>
+    </section>
+  </main>
+</div></div></div>
+
+<script>
+  /* =========================================================
+     EDIT HERE
+     CATEGORIES: order = left-to-right columns, light green to dark green.
+     EXPERIENCES: sample names - replace with the real list.
+     MOST_USED: pinned in the top row.
+     ========================================================= */
+  const CATEGORIES = [
+    { key: "check",  name: "Checking",        head: "#A8D5A2", text: "#13241A", bg: "#EEF7EC" },
+    { key: "save",   name: "Savings",         head: "#8CC784", text: "#13241A", bg: "#E4F2E1" },
+    { key: "credit", name: "Credit cards",    head: "#6DB165", text: "#13241A", bg: "#D9EBD5" },
+    { key: "debit",  name: "Debit cards",     head: "#4E9A48", text: "#13241A", bg: "#CEE4CA" },
+    { key: "digi",   name: "Digital & online",head: "#3A7F37", text: "#FFFFFF", bg: "#C3DCBF" },
+    { key: "fees",   name: "Fees & balances", head: "#2C6A2E", text: "#FFFFFF", bg: "#B8D3B4" },
+    { key: "fraud",  name: "Disputes & fraud",head: "#1F5423", text: "#FFFFFF", bg: "#ADC9A9" }
+  ];
+
+  const EXPERIENCES = [
+    ["Checking account selector", "check"], ["Direct deposit setup", "check"],
+    ["Overdraft protection", "check"], ["Switch to paperless", "check"],
+    ["Savings account selector", "save"], ["Automatic savings transfer", "save"],
+    ["Credit card balance transfer", "credit"], ["Credit card paperless statements", "credit"],
+    ["Credit card product selector", "credit"], ["Credit card payment options", "credit"],
+    ["Debit card activation", "debit"], ["Debit card replacement", "debit"],
+    ["Travel notice", "debit"],
+    ["Digital convenience", "digi"], ["Mobile app setup", "digi"],
+    ["Online banking login help", "digi"], ["Password reset", "digi"],
+    ["Overdraft fee", "fees"], ["Monthly maintenance fee", "fees"],
+    ["Minimum balance", "fees"], ["Wire transfer fee", "fees"],
+    ["Debit and credit card dispute", "fraud"], ["Fraud alert", "fraud"],
+    ["Identity verification", "fraud"], ["Phishing and scams", "fraud"]
+  ].map(([name, cat]) => ({ name, cat }));
+
+  // Optional: real message wording per experience. Anything not listed uses the default line.
+  const MESSAGES = {
+    "Credit card balance transfer": "TD makes it quick and easy to transfer a high-interest balance to your TD Bank credit card, up to your available credit, through online or mobile banking.",
+    "Debit and credit card dispute": "You can review a transaction and start a dispute right from online or mobile banking.",
+    "Overdraft fee": "Here is how overdraft fees work, and the options available on your account."
+  };
+
+  const MOST_USED = [
+    "Debit and credit card dispute", "Overdraft fee", "Digital convenience",
+    "Credit card balance transfer", "Password reset", "Checking account selector"
+  ];
+  /* ========================================================= */
+
+  const catByKey = Object.fromEntries(CATEGORIES.map(c => [c.key, c]));
+  let picked = MOST_USED[0];
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => s.replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+
+  function makeTile(t) {
+    const c = catByKey[t.cat];
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "tile";
+    b.style.background = c.bg;
+    b.setAttribute("aria-pressed", t.name === picked);
+    b.innerHTML = `<span class="dot" style="background:${c.head}"></span>${esc(t.name)}`;
+    b.onclick = () => { picked = t.name; render(); };
+    return b;
+  }
+
+  function render() {
+    const q = $("search").value.trim().toLowerCase();
+    const searching = q.length > 0;
+
+    $("favSection").hidden = searching;
+    $("fav").innerHTML = "";
+    MOST_USED.forEach(n => {
+      const t = EXPERIENCES.find(x => x.name === n);
+      if (t) $("fav").appendChild(makeTile(t));
+    });
+
+    $("cats").innerHTML = "";
+    let shown = 0;
+    CATEGORIES.forEach(c => {
+      const list = EXPERIENCES
+        .filter(t => t.cat === c.key && t.name.toLowerCase().includes(q))
+        .sort((a, b) => a.name.localeCompare(b.name));
+      if (!list.length) return;
+      shown += list.length;
+      const col = document.createElement("div");
+      col.className = "col";
+      const head = document.createElement("div");
+      head.className = "col-head";
+      head.style.background = c.head;
+      head.style.color = c.text;
+      head.innerHTML = `<span>${esc(c.name)}</span><span class="count">${list.length}</span>`;
+      col.appendChild(head);
+      list.forEach(t => col.appendChild(makeTile(t)));
+      $("cats").appendChild(col);
+    });
+    $("empty").hidden = shown > 0;
+    $("catsTitle").textContent = searching ? "Results" : "By category";
+    renderPreview();
+  }
+
+  function renderPreview() {
+    const t = EXPERIENCES.find(x => x.name === picked) || EXPERIENCES[0];
+    const c = catByKey[t.cat];
+    $("picked").style.background = c.bg;
+    $("picked").innerHTML = `<span class="dot" style="background:${c.head}"></span>${esc(t.name)}`;
+    const name = $("cname").value.trim() || "[First name]";
+    const body = MESSAGES[t.name] || `Here is more information about ${t.name.toLowerCase()}.`;
+    const msg = `Hi ${esc(name)},<br><br>${esc(body)}<br><br>Tap to continue: <span class="link">[link]</span>`;
+    $("bubble").innerHTML = msg;
+    $("bubbleMini").innerHTML = msg;
+  }
+
+  $("search").addEventListener("input", render);
+  $("cname").addEventListener("input", renderPreview);
+  $("send").addEventListener("click", () => { $("sendNote").textContent = "Mockup only: message not sent."; });
+
+  function fit() {
+    const pad = 20;
+    const k = Math.min(1, (window.innerWidth - pad) / 1440);
+    const stage = document.getElementById("stage");
+    stage.style.transform = "scale(" + k + ")";
+    stage.style.height = (900 * k) + "px";
+  }
+  window.addEventListener("resize", fit);
+  fit();
+
+  render();
+</script>
+</body>
+</html>
